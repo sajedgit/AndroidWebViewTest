@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.net.http.SslError;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -28,11 +30,20 @@ public class MainActivity extends Activity {
 
 
           myWebView = (WebView) findViewById(R.id.webview);
-          myWebView.setWebViewClient(new WebViewClient());
+        //  myWebView.setWebViewClient(new WebViewClient());
+
+        myWebView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                // DO NOT CALL SUPER METHOD
+                super.onReceivedSslError(view, handler, error);
+            }
+        });
 
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setDomStorageEnabled(true);
 
 
 
